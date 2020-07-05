@@ -1,0 +1,62 @@
+<html>
+    <head>
+        <h3>Model A</h3>
+        <table>
+            <thead>
+                {% for dicho in model_a_list %}
+                    <th>{% dicho[0] %}</th>
+                    <th>{% dicho[1] %}</th>
+                {% endfor %}
+            </thead>
+            <tbody>
+                {% for e in elements %}
+                    <tr>{% e %}</tr>
+                    {% for dicho in model_a_list %}
+                        <tr>
+                            <input class="form-check-input" type="radio" value=0 name={% dicho[0] %}>
+                        </tr>
+                        <tr>
+                            <input class="form-check-input" type="radio" value=0 name={% dicho[1] %}>
+                        </tr>
+                        <th>{% dicho[0] %}</th>
+                        <th>{% dicho[1] %}</th>
+                    {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3>Reinin Dichotomies</h3>
+        <table>
+            <thead>
+
+            </thead>
+            <tbody>
+                {% for dicho in reinin_list %}
+                    <tr>{% dicho[0] %}</tr>
+                    <tr>
+                        <input class="form-check-input" type="radio" value=0 name={% dicho[0] %}>
+                    </tr>
+                    <tr>
+                        <input class="form-check-input" type="radio" value=0 name={% dicho[1] %}>
+                    </tr>
+                    <tr>{% dicho[1] %}</tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3>Score</h3>
+        <table>
+            <thead>
+
+            </thead>
+            <tbody>
+                {% for s in get_score() %}
+                    <tr>{% s[0] %}</tr> <tr>{% s[1] %}</tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </head>
+    <body>
+
+    </body>
+</html>
