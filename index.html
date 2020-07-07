@@ -1,0 +1,95 @@
+{% load socionics_extras %}
+<html>
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <style>
+            .form-check-input.model-a {display: block; margin: auto;}
+        </style>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="/component.js"></script>
+        <script>
+            function updateScore() {
+                document.getElementById("score").innerHTML = (
+                    <table class="table-sm">
+                        <thead>
+                        </thead>
+                        <tbody>
+                            {% for sc in get_scores %}
+                            <tr>
+                                <td>{{ sc.0 }}</td> <td>{{ sc.1 }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                )
+            }
+        </script>
+    </head>
+    <body>
+        <container>
+            <h3>Model A</h3>
+            <table class="table-sm">
+                <thead>
+                    <tr>
+                        <th>IE</th>
+                        {% for dicho in model_a_list %}
+                        <th scope="col">{{ dicho.0 }}</th>
+                        <th scope="col">{{ dicho.1 }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for e in elements %}
+                        <tr>
+                            <th scope="row">{{ e }}</td>
+                            {% for dicho in model_a_list %}
+                            <td>
+                                <div class="form-check">
+                                    <input class="form-check-input model-a" type="radio" value=0 name={{ dicho.0|addstr:dicho.1|addstr:e}} onclick="updateScore()" onchange={{e |check_model_a:dicho.0}}>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-check">
+                                    <input class="form-check-input model-a" type="radio" value=0 name={{ dicho.0|addstr:dicho.1|addstr:e}}>
+                                </div>
+                            </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        
+            <h3>Reinin Dichotomies</h3>
+            <table class="table-sm">
+                <thead>
+                </thead>
+                <tbody>
+                    {% for dicho in reinin_list %}
+                    <tr>
+                        <td>
+                            {{ dicho.0 }}
+                        </td>
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" value=0 name={{ dicho.0|addstr:dicho.1 }}>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" value=0 name={{ dicho.0|addstr:dicho.1 }}>
+                            </div>
+                        </td>
+                        <td>
+                            {{ dicho.1 }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                
+                <h3>Score</h3>
+                <div id="score">
+                </div>
+    </container>
+    </body>
+    </html>
