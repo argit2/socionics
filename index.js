@@ -45,47 +45,47 @@ let opposite_model_a = new TwoWayMap({
 let model_a_list = Object.entries(opposite_model_a.map);
 
 let jungian = {
-    "LII" : new Set(["I", "N", "T", "j"]),
-    "ILE" : new Set(["E", "N", "T", "p"]),
-    "SEI" : new Set(["I", "S", "F", "p"]),
-    "ESE" : new Set(["E", "S", "F", "j"]),
-    "LSI" : new Set(["I", "S", "T", "j"]),
-    "SLE" : new Set(["E", "S", "T", "p"]),
-    "IEI" : new Set(["I", "N", "F", "p"]),
-    "EIE" : new Set(["E", "N", "F", "j"]),
-    "ILI" : new Set(["I", "N", "T", "p"]),
-    "LIE" : new Set(["E", "N", "T", "j"]),
-    "ESI" : new Set(["I", "S", "F", "j"]),
-    "SEE" : new Set(["E", "S", "F", "p"]),
-    "SLI" : new Set(["I", "S", "T", "p"]),
-    "LSE" : new Set(["E", "S", "T", "j"]),
-    "EII" : new Set(["I", "N", "F", "j"]),
-    "IEE" : new Set(["E", "N", "F", "p"])
+    "LII" : ["I", "N", "T", "j"],
+    "ILE" : ["E", "N", "T", "p"],
+    "SEI" : ["I", "S", "F", "p"],
+    "ESE" : ["E", "S", "F", "j"],
+    "LSI" : ["I", "S", "T", "j"],
+    "SLE" : ["E", "S", "T", "p"],
+    "IEI" : ["I", "N", "F", "p"],
+    "EIE" : ["E", "N", "F", "j"],
+    "ILI" : ["I", "N", "T", "p"],
+    "LIE" : ["E", "N", "T", "j"],
+    "ESI" : ["I", "S", "F", "j"],
+    "SEE" : ["E", "S", "F", "p"],
+    "SLI" : ["I", "S", "T", "p"],
+    "LSE" : ["E", "S", "T", "j"],
+    "EII" : ["I", "N", "F", "j"],
+    "IEE" : ["E", "N", "F", "p"]
     };
 
 let reinin = {
     "carefree" : "EN",
-    "obstinate" : "ET",
-    "static" : "EP",
-    "aristocratic" : "NT",
-    "tactical" : "NP",
-    "constructivist" : "TP",
+    "yielding" : "ET",
+    "static" : "Ep",
+    "democratic" : "NT",
+    "tactical" : "Np",
+    "constructivist" : "Tp",
     "positivist" : "ENT",
-    "reasonable" : "ENP",
-    "subjectivist" : "ETP",
-    "process" : "NTP",
-    "asking" : "ENTP"
+    "judicious" : "ENp",
+    "subjectivist" : "ETp",
+    "process" : "NTp",
+    "asking" : "ENTp"
 };
 
 let opposite_reinin = new TwoWayMap({
     "farsighted" : "carefree",
-    "compliant" : "obstinate",
+    "obstinate" : "yielding",
     "dynamic" : "static",
-    "democratic" : "aristocratic",
+    "aristocratic" : "democratic",
     "strategic" : "tactical",
     "emotivist" : "constructivist",
     "negativist" : "positivist",
-    "resolute" : "reasonable",
+    "decisive" : "judicious",
     "objectivist" : "subjectivist",
     "result" : "process",
     "declaring" : "asking"
@@ -93,16 +93,16 @@ let opposite_reinin = new TwoWayMap({
 
 let reinin_list = Object.entries(opposite_reinin.map);
 
-let opposite_keyword = new TwoWayMap({
+let opposite_keyword = {
     "E" : "I",
     "I" : "E",
     "N" : "S",
     "S" : "N",
     "T" : "F",
     "F" : "T",
-    "P" : "J",
-    "J" : "P"
-})
+    "p" : "j",
+    "j" : "p"
+}
 
 let checked_reinin = {...opposite_reinin.map, ...opposite_reinin.reverseMap}
 for (let c in checked_reinin) {
@@ -116,64 +116,60 @@ let checked_model_a = {}
         }
 }
     
-let check_reinin = (dicho) => {
-
-    checked_reinin[dicho] = true
-    let opposite = opposite_reinin.revGet(dicho)
-    checked_reinin[opposite] = false
-    updateScore()
-}
-
-let check_model_a = (ie, dicho) => {
-
-    checked_model_a[ie][dicho] = true
-    let opposite = opposite_model_a.revGet(dicho)
-    checked_model_a[ie][opposite] = false
-    updateScore()
-}
 
 let get_IE_from_indexes = (l, type) => {
     let inf_elements = types[type]
-    console.log("what", inf_elements)
     return [...l].map((x) => inf_elements[x - 1])
 }
     
 let get_reinin_keyword = (dicho) => {
 
-    if (dicho in reinin) {
-        return reinin[dicho]
+    let has_reinin_keyword = true
+    if (!(dicho in reinin)) {
+        dicho = opposite_reinin.map[dicho]
+        has_reinin_keyword = false
     }
-    else {
-
-        let opposite = reinin[opposite_reinin[dicho]]
-        let keyword = opposite.forEach((x) => opposite_keyword[x]).join('')
-        return keyword
-    } 
+    return [reinin[dicho], has_reinin_keyword]
 }
 
-let is_reinin = (keyword, t) => {
+let is_reinin = (keyword, t, has_keyword = true) => {
 
-    n = keyword.length
-    // accepts both "carefree" && "EN" as an input
-    if (n > 3) {
-        keyword = get_reinin_keyword(keyword)
+    if (!(typeof keyword === 'string' || keyword instanceof String))
+    {
+        return false;
     }
-    if (n == 2) {
-
-        let first = keyword[0]
-        let second = keyword[1]
-        return (first in jungian[t] && second in jungian[t]) ||
-            (opposite_keyword[first] in jungian[t] && opposite_keyword[second] in jungian[t])
+    // grabs keyword corresponding to dichotomy
+    if (keyword.length > 4) {
+        [keyword, has_keyword] = get_reinin_keyword(keyword)
     }
-    // n == 3
+    // else, always true
     else {
-        return is_reinin(keyword.slice(0, 2)) && is_reinin(keyword[2])
+        has_keyword = true
+    }
+    let first = keyword[0]
+    let second = keyword[1]
+    let jung = jungian[t]
+    if (t == 'LII') console.log(jung, keyword)
+    if (keyword.length == 2) {
+        if (! has_keyword)
+        {
+            return ! (jung.includes(first) == jung.includes(second))
+        }
+        return (jung.includes(first) == jung.includes(second))
+    }
+    // n == 3 or n == 4
+    else {
+        let last = keyword[keyword.length - 1]
+        if (! has_keyword)
+        {
+            return ! (is_reinin(keyword.slice(0, keyword.length - 1), t) == jung.includes(last))
+        }
+        return (is_reinin(keyword.slice(0, keyword.length - 1), t) == jung.includes(last))
     }
 }
     
 
 let score_reinin = (scores) => {
-
     for (let t in scores)
     {
 
@@ -207,7 +203,6 @@ let is_model_a_dicho = (dicho, t, information_element) => {
         dicho = get_model_a_dicho(dicho)
     }
     let inf_elements = get_IE_from_indexes(dicho, t)
-    console.log(inf_elements, dicho, t)
     return (inf_elements.includes(information_element))
 }
 
@@ -259,22 +254,6 @@ let get_scores = () => {
     return items
 }
 
-let updateScore = () => {
-    document.getElementById("score").innerHTML = `
-        <table class="table-sm">
-            <thead>
-                </thead>
-                <tbody>
-                <template v-for="sc in get_scores">
-                    <tr>
-                        <td>{ sc[0] }</td>
-                        <td>{ sc[1] }</td>
-                    </tr>
-                </template>
-                </tbody>
-        </table>
-        `
-}
 
 var app = new Vue ({
         el : '#app',
@@ -290,11 +269,10 @@ var app = new Vue ({
             reinin_list : reinin_list,
             opposite_keyword : opposite_keyword,
             checked_reinin : checked_reinin,
-            checked_model_a : checked_model_a
+            checked_model_a : checked_model_a,
+            score : ''
         },
         methods : {
-            check_reinin : check_reinin,
-            check_model_a : check_model_a,
             get_IE_from_indexes : get_IE_from_indexes,
             get_reinin_keyword : get_reinin_keyword,
             is_reinin : is_reinin,
@@ -303,6 +281,30 @@ var app = new Vue ({
             is_model_a_dicho : is_model_a_dicho,
             score_model_a : score_model_a,
             get_scores : get_scores,
-            updateScore : updateScore
+            updateScore () {
+                this.score = get_scores() 
+                return this.score
+            },
+            check_reinin (dicho) {
+
+                checked_reinin[dicho] = true
+                let opposite
+                if (dicho in opposite_reinin.map) {
+                    opposite = opposite_reinin.map[dicho]
+                }
+                else {
+                    opposite = opposite_reinin.reverseMap[dicho]
+                }
+                checked_reinin[opposite] = false
+                this.updateScore()
+            },
+            
+            check_model_a (ie, dicho) {
+            
+                checked_model_a[ie][dicho] = true
+                let opposite = opposite_model_a.revGet(dicho)
+                checked_model_a[ie][opposite] = false
+                this.updateScore()
+            }
         }
     });

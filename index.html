@@ -28,12 +28,12 @@
                                 <template v-for="dicho in model_a_list">
                                     <td>
                                         <div class="form-check">
-                                            <input class="form-check-input model-a" type="radio" value=0 v-bind:name="dicho[0] + dicho[1] + e" v-on:click="check_model_a(e, dicho[0])">
+                                            <input class="form-check-input model-a" type="radio" value=0 v-bind:name="dicho[0] + dicho[1] + e" @click="check_model_a(e, dicho[0])">
                                         </div>
                                     </td>
                                     <td>
                                         <div class="form-check">
-                                            <input class="form-check-input model-a" type="radio" value=0 v-bind:name="dicho[0] + dicho[1] + e">
+                                            <input class="form-check-input model-a" type="radio" value=0 v-bind:name="dicho[0] + dicho[1] + e" @click="check_model_a(e, dicho[1])">
                                         </div>
                                     </td>
                                 </template>
@@ -54,12 +54,12 @@
                         </td>
                         <td>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" value=0 v-bind:name="dicho[0] + dicho[1]">
+                                <input class="form-check-input" type="radio" value=0 v-bind:name="dicho[0] + dicho[1]" @click="check_reinin(dicho[0])">
                             </div>
                         </td>
                         <td>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" value=0 v-bind:name="dicho[0] + dicho[1]">
+                                <input class="form-check-input" type="radio" value=0 v-bind:name="dicho[0] + dicho[1]" @click="check_reinin(dicho[1])">
                             </div>
                         </td>
                         <td>
@@ -70,9 +70,19 @@
             </tbody>
         </table>
         
-        <h3>Score</h3>
-            <div id="score">
-                </div>
+        <h3>Score (max: 27)</h3>
+            <table class="table-sm">
+                <thead>
+                    </thead>
+                    <tbody>
+                    <template v-for="sc in score">
+                        <tr>
+                            <td>{{ sc[0] }}</td>
+                            <td>{{ sc[1] }}</td>
+                        </tr>
+                    </template>
+                    </tbody>
+            </table>
             </div>
         </container>
         <script src="index.js"></script>
