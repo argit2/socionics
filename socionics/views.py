@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.template import loader
 from django.http import HttpResponse
+from django import forms
+from bidict import bidict
 
 elements = ["Ti", "Te", "Fi", "Fe", "Ni", "Ne", "Si", "Se"]
 
@@ -28,10 +30,10 @@ model_a = {
     "valued" : {1, 2, 5, 6}
 }
 
-opposite_model_a = {
+opposite_model_a = bidict({
     "weak" : "strong",
     "devalued" : "valued"
-}
+})
 
 model_a_list = [[opposite_model_a[x], x] for x in opposite_model_a]
 
@@ -68,7 +70,7 @@ reinin = {
     "asking" : "ENTP"
 }
 
-opposite_reinin = {
+opposite_reinin = bidict({
     "farsighted" : "carefree",
     "compliant" : "obstinate",
     "dynamic" : "static",
@@ -80,12 +82,12 @@ opposite_reinin = {
     "objectivist" : "subjectivist",
     "result" : "process",
     "declaring" : "asking"
-}
+})
 
 reinin_list = [[opposite_reinin[x], x] for x in opposite_reinin]
 
 
-opposite_keyword = {
+opposite_keyword = bidict({
     "E" : "I",
     "I" : "E",
     "N" : "S",
@@ -94,14 +96,32 @@ opposite_keyword = {
     "F" : "T",
     "P" : "J",
     "J" : "P"
-}
+})
+checked_reinin = {**opposite_reinin, **opposite_reinin.inverse}
+for c in checked_reinin:
+    checked_reinin[c] = False
+checked_model_a = {}
+for e in elements:
+    checked_model_a[e] = {**opposite_model_a, **opposite_model_a.inverse}
+    for dicho in checked_model_a[e]:
+        checked_model_a[e][dicho] = False
+
+def check_reinin(dicho):
+    checked_reinin[dicho] = True
+    opposite = opposite_reinin.inverse[dicho]
+    checked_reinin[opposite] = False
+
+def check_model_a(ie, dicho):
+    checked_model_a[ie][dicho] = True
+    opposite = opposite_model_a.inverse[dicho]
+    checked_model_a[ie][opposite] = False
 
 def apply(l, type):
     """
         get corresponding information elements from type
     """
     inf_elements = types[type]
-    return [inf_elements[x] for x in l]
+    return [inf_elements[x - 1] for x in l]
 
 def get_reinin_keyword(dicho):
     if dicho in reinin:
@@ -123,7 +143,35 @@ def is_reinin(keyword, t):
     else: # n == 3
         return is_reinin(keyword[0:2]) and is_reinin(keyword[2])
 
-scores = {
+
+def score_reinin(scores):
+    for t in scores:
+        for dicho in checked_reinin:
+            if checked_reinin[dicho] and is_reinin(dicho, t):
+                scores[t] += 1
+    return scores
+
+def get_model_a_dicho(dicho):
+    if dicho in model_a:
+        return model_a[dicho]
+    return {1, 2, 3, 4, 5, 6, 7, 8} - model_a[dicho]
+
+def is_model_a_dicho(dicho, t, information_element):
+    if isinstance(dicho, str):
+        dicho = get_model_a_dicho(dicho)
+    inf_elements = apply(dicho, t)
+    return information_element in inf_elements
+
+def score_model_a(scores):
+    for t in scores:
+        for e in checked_model_a:
+            for dicho in checked_model_a[e]:
+                if checked_model_a[e][dicho] and is_model_a_dicho(dicho, t, e):
+                    scores[t] += 1
+    return scores
+
+def get_scores():
+    scores = {
     "LII" : 0,
     "ILE" : 0,
     "SEI" : 0,
@@ -140,31 +188,11 @@ scores = {
     "LSE" : 0,
     "EII" : 0,
     "IEE" : 0
-}
-
-def check_reinin(dicho, plus = 1):
-    for t in scores:
-        if is_reinin(dicho, t):
-            scores[t] += plus
-
-def get_model_a_dicho(dicho):
-    if dicho in model_a:
-        return model_a[dicho]
-    return {1, 2, 3, 4, 5, 6, 7, 8} - model_a[dicho]
-
-def is_model_a_dicho(dicho, t, information_element):
-    if is_instance(dicho, str):
-        dicho = get_model_a_dicho(dicho)
-    inf_elements = apply(dicho, t)
-    return information_element in inf_elements
-
-def check_model_a(dicho, information_element, plus = 1):
-    for t in scores:
-        if is_model_a_dicho(dicho, t, information_element):
-            scores[t] += plus
-
-def get_scores():
+    }
+    scores = score_reinin(scores)
+    scores = score_model_a(scores)
     l = [[k, v] for k, v in sorted(scores.items(), key=lambda item: item[1])]
+    print(l)
     return l
 
 def index(request):

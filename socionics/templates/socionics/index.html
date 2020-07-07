@@ -5,6 +5,25 @@
         <style>
             .form-check-input.model-a {display: block; margin: auto;}
         </style>
+        {% block javascript %}
+        <script>
+            function updateScore() {
+                document.getElementById("score").innerHTML = (
+                    <table class="table-sm">
+                        <thead>
+                        </thead>
+                        <tbody>
+                            {% for sc in get_scores %}
+                            <tr>
+                                <td>{{ sc.0 }}</td> <td>{{ sc.1 }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                )
+            }
+        </script>
+        {% endblock javascript %}
     </head>
     <body>
         <container>
@@ -26,7 +45,7 @@
                             {% for dicho in model_a_list %}
                             <td>
                                 <div class="form-check">
-                                    <input class="form-check-input model-a" type="radio" value=0 name={{ dicho.0|addstr:dicho.1|addstr:e}}>
+                                    <input class="form-check-input model-a" type="radio" value=0 name={{ dicho.0|addstr:dicho.1|addstr:e}} onclick="updateScore()" onchange={{e |check_model_a:dicho.0}}>
                                 </div>
                             </td>
                             <td>
@@ -69,17 +88,8 @@
                 </table>
                 
                 <h3>Score</h3>
-                <table class="table-sm">
-                    <thead>
-                    </thead>
-                    <tbody>
-                        {% for s in get_scores %}
-                        <tr>
-                            <td>{{ s.0 }}</td> <td>{{ s.1 }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-            </table>
+                <div id="score">
+                </div>
     </container>
     </body>
     </html>
