@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.template import loader
+from django.http import HttpResponse
 
 elements = ["Ti", "Te", "Fi", "Fe", "Ni", "Ne", "Si", "Se"]
 
@@ -21,14 +23,13 @@ types = {
     "IEE" : ["Ne", "Fi", "Se", "Ti", "Si", "Te", "Ni", "Fe", ]
     }
 
-model_a = 
-{
-    "strong" : {1, 2, 7, 8}
+model_a = {
+    "strong" : {1, 2, 7, 8},
     "valued" : {1, 2, 5, 6}
 }
 
 opposite_model_a = {
-    "weak" : "strong"
+    "weak" : "strong",
     "devalued" : "valued"
 }
 
@@ -143,7 +144,7 @@ scores = {
 
 def check_reinin(dicho, plus = 1):
     for t in scores:
-        if is_reinin(dicho, t)
+        if is_reinin(dicho, t):
             scores[t] += plus
 
 def get_model_a_dicho(dicho):
@@ -159,9 +160,15 @@ def is_model_a_dicho(dicho, t, information_element):
 
 def check_model_a(dicho, information_element, plus = 1):
     for t in scores:
-        if is_model_a_dicho(dicho, t, information_element)
+        if is_model_a_dicho(dicho, t, information_element):
             scores[t] += plus
 
 def get_scores():
     l = [[k, v] for k, v in sorted(scores.items(), key=lambda item: item[1])]
+    return l
+
+def index(request):
+    template = loader.get_template('socionics/index.html')
+    context = {'model_a_list' : model_a_list, 'elements' : elements, 'reinin_list' : reinin_list, 'get_scores' : get_scores}
     
+    return HttpResponse(template.render(context, request))
