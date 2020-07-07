@@ -6,7 +6,7 @@ from bidict import bidict
 
 elements = ["Ti", "Te", "Fi", "Fe", "Ni", "Ne", "Si", "Se"]
 
-types = {
+types = [
     "LII" : ["Ti", "Ne", "Fi", "Se", "Fe", "Si", "Te", "Ni", ],
     "ILE" : ["Ne", "Ti", "Se", "Fi", "Si", "Fe", "Ni", "Te", ],
     "SEI" : ["Si", "Fe", "Ni", "Te", "Ne", "Ti", "Se", "Fi", ],
@@ -23,7 +23,7 @@ types = {
     "LSE" : ["Te", "Si", "Fe", "Ni", "Fi", "Ne", "Ti", "Se", ],
     "EII" : ["Fi", "Ne", "Ti", "Se", "Te", "Si", "Fe", "Ni", ],
     "IEE" : ["Ne", "Fi", "Se", "Ti", "Si", "Te", "Ni", "Fe", ]
-    }
+    ]
 
 model_a = {
     "strong" : {1, 2, 7, 8},
