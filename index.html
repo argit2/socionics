@@ -14,7 +14,7 @@
                 <table class="table-sm">
                     <thead>
                         <tr>
-                            <th>IE</th>
+                            <th scope="col">IE</th>
                             <template v-for="dicho in model_a_list">
                                 <th scope="col">{{ dicho[0] }}</th>
                                 <th scope="col">{{ dicho[1] }}</th>
@@ -24,7 +24,7 @@
                     <tbody>
                         <template v-for="e in elements">
                             <tr>
-                            <th scope="row">{{ e }}</td>
+                            <th scope="row">{{ e }}</th>
                                 <template v-for="dicho in model_a_list">
                                     <td>
                                         <div class="form-check">
@@ -39,8 +39,8 @@
                                 </template>
                             </tr>
                         </template>
-            </tbody>
-        </table>
+                    </tbody>
+                </table>
         
         <h3>Reinin Dichotomies</h3>
         <table class="table-sm">
