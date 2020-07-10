@@ -78,6 +78,28 @@
                 </template>
             </tbody>
         </table>
+        <div>
+            <template v-for="dicho in reinin_list">
+                    <div class="row" style="vertical-align: middle; text-align:center">
+                        <div class="col-2">
+                            {{ dicho[0] }}
+                        </div>
+                        <div class="col-1">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" value=0 v-bind:name="dicho[0] + dicho[1]" @click="check_reinin(dicho[0])">
+                            </div>
+                        </div>
+                        <div class="col-1">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" value=0 v-bind:name="dicho[0] + dicho[1]" @click="check_reinin(dicho[1])">
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            {{ dicho[1] }}
+                        </div>
+                    </tr>
+            </template>
+        </div>
         <br></br>
         <h3>Score (max: 27)</h3>
             <table class="table-sm">
