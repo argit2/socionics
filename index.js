@@ -310,25 +310,33 @@ var app = new Vue ({
                 this.score = get_scores() 
                 return this.score
             },
-            check_reinin (dicho) {
-
-                checked_reinin[dicho] = true
-                let opposite
-                if (dicho in opposite_reinin.map) {
-                    opposite = opposite_reinin.map[dicho]
+            check_reinin (ev, dicho) {
+                if (ev.target.checked) {
+                    checked_reinin[dicho] = true
+                    // let opposite
+                    // if (dicho in opposite_reinin.map) {
+                    //     opposite = opposite_reinin.map[dicho]
+                    // }
+                    // else {
+                    //     opposite = opposite_reinin.reverseMap[dicho]
+                    // }
+                    // checked_reinin[opposite] = false
                 }
                 else {
-                    opposite = opposite_reinin.reverseMap[dicho]
+                    checked_reinin[dicho] = false
                 }
-                checked_reinin[opposite] = false
                 this.updateScore()
             },
             
-            check_model_a (ie, dicho) {
-            
-                checked_model_a[ie][dicho] = true
-                let opposite = opposite_model_a.revGet(dicho)
-                checked_model_a[ie][opposite] = false
+            check_model_a (ev, ie, dicho) {
+                if (ev.target.checked) {
+                    checked_model_a[ie][dicho] = true
+                    // let opposite = opposite_model_a.revGet(dicho)
+                    // checked_model_a[ie][opposite] = false
+                }
+                else {
+                    checked_model_a[ie][dicho] = false
+                }
                 this.updateScore()
             }
         }
