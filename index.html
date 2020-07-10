@@ -8,6 +8,11 @@
             .form-check-input.model-a {display: inline-block;}
         </style>
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script>
+            window.onbeforeunload = function(e) {
+              return 'Are you sure you want to leave this page? You will lose the test answers, and the test might work incorrectly when you go back.';
+            };
+        </script>
     </head>
     <body>
         <container>
