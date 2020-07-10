@@ -77,7 +77,7 @@
                     <tbody>
                     <template v-for="sc in score">
                         <tr>
-                            <td>{{ sc[0] }}</td>
+                            <td><a v-bind:href="'http://www.wikisocion.net/en/index.php?title=' + sc[0] + '_Profile_by_Gulenko'">{{ sc[0] }}</a></td>
                             <td>{{ sc[1] }}</td>
                         </tr>
                     </template>
