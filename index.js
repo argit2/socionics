@@ -72,26 +72,51 @@ let reinin = {
     "constructivist" : "Tp",
     "positivist" : "ENT",
     "judicious" : "ENp",
-    "subjectivist" : "ETp",
+    "merry" : "ETp",
     "process" : "NTp",
     "asking" : "ENTp"
 };
 
 let opposite_reinin = new TwoWayMap({
+    "aristocratic" : "democratic",
+    "decisive" : "judicious",
+    "serious" : "merry",
+    "dynamic" : "static",
+    "negativist" : "positivist",
+    "result" : "process",
     "farsighted" : "carefree",
     "obstinate" : "yielding",
-    "dynamic" : "static",
-    "aristocratic" : "democratic",
     "strategic" : "tactical",
     "emotivist" : "constructivist",
-    "negativist" : "positivist",
-    "decisive" : "judicious",
-    "objectivist" : "subjectivist",
-    "result" : "process",
     "declaring" : "asking"
 });
 
-let reinin_list = Object.entries(opposite_reinin.map);
+let reinin_list = Object.entries(opposite_reinin.reverseMap);
+
+let reinin_descriptions = {
+    "aristocratic": "perceives people as belonging to groups, understands people by who they associate with",
+    "democratic" : "perceives people as possessing individual traits, places little thought into who people associate with",
+    "decisive": "values action and decisiveness, natural state is mobilized, difficulty in becoming demobilized",
+    "judicious" : "values relaxation and taking their time, natural state is demobilized, difficulty in becoming mobilized",
+    "serious": "gets to know people through rituals, inclined to believe into objective truths",
+    "merry" : "gets to know people naturally, not inclined to believe into objective truths",
+    "dynamic": "understands reality as continuous changes",
+    "static" : "understands reality as discrete states",
+    "negativist": "",
+    "positivist" : "",
+    "result": "",
+    "process" : "",
+    "farsighted": "",
+    "carefree" : "",
+    "obstinate": "",
+    "yielding" : "",
+    "strategic": "",
+    "tactical" : "",
+    "emotivist": "",
+    "constructivist" : "",
+    "declaring": "",
+    "asking" : ""
+};
 
 let opposite_keyword = {
     "E" : "I",

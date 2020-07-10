@@ -3,28 +3,37 @@
         <meta charset="UTF-8">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
         <style>
-            .form-check-input.model-a {display: block; margin: auto;}
+            .form-check {margin: none;}
+            .form-check-input.model-a {display: inline-block;}
         </style>
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     </head>
     <body>
         <container>
-            <div id="app">
+            <div></div>
+            <div class="col-sm" style="max-width: 480px;" id="app">
+                <h2>Socionics Test</h2>
+                <h3>Explanation</h3>
+                <p>This test is meant for people with previous knowledge of socionics but who are still confused about their type. Instead of a series of affirmations about characteristics, you'll directly assess whether you fit socionics concepts or not.</p>
+                <p>The test comes from the idea that your socionics type is the one whose traits from diverse parts of socionics you most identify with. In this case, the traits are from model A and reinin. I would also like to include other things such as cognitive styles, but I would say they require some reading and self reflection.</p>
+                <p>You don't need to fill the entire test for it to display results. Give an answer only to things you genuinely agree with, and leave blank what you are in doubt about.</p>
+                <p>The scores are directly calculated. For example, marking "strong Ti" will give one point to every type with strong Ti (ILE, LII, SLE, LSI).</p>
+                <p>Links everywhere in this bitch.</p>
                 <h3>Model A</h3>
                 <table class="table-sm">
                     <thead>
                         <tr>
                             <th scope="col">IE</th>
                             <template v-for="dicho in model_a_list">
-                                <th scope="col">{{ dicho[0] }}</th>
-                                <th scope="col">{{ dicho[1] }}</th>
+                                <th scope="col"><a v-bind:href="'http://www.wikisocion.net/en/index.php?title=' + dicho[0]">{{ dicho[0] }}</a></th>
+                                <th scope="col"><a v-bind:href="'http://www.wikisocion.net/en/index.php?title=' + dicho[1]">{{ dicho[1] }}</a></th>
                             </template>
                         </tr>
                     </thead>
                     <tbody>
                         <template v-for="e in elements">
                             <tr>
-                            <th scope="row">{{ e }}</th>
+                            <th scope="row"><a v-bind:href="'http://www.wikisocion.net/en/index.php?title=' + e">{{ e }}</a></th>
                                 <template v-for="dicho in model_a_list">
                                     <td>
                                         <div class="form-check">
@@ -41,7 +50,7 @@
                         </template>
                     </tbody>
                 </table>
-        
+        <br></br>
         <h3>Reinin Dichotomies</h3>
         <table class="table-sm">
             <thead>
@@ -50,7 +59,7 @@
                 <template v-for="dicho in reinin_list">
                     <tr>
                         <td>
-                            {{ dicho[0] }}
+                            <a v-bind:href="'http://www.wikisocion.net/en/index.php?title=' + dicho[0]">{{ dicho[0] }}</a>
                         </td>
                         <td>
                             <div class="form-check">
@@ -63,13 +72,13 @@
                             </div>
                         </td>
                         <td>
-                            {{ dicho[1] }}
+                            <a v-bind:href="'http://www.wikisocion.net/en/index.php?title=' + dicho[1]">{{ dicho[1] }}</a>
                         </td>
                     </tr>
                 </template>
             </tbody>
         </table>
-        
+        <br></br>
         <h3>Score (max: 27)</h3>
             <table class="table-sm">
                 <thead>
