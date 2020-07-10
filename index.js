@@ -244,7 +244,35 @@ let score_model_a = (scores) => {
     }
     return scores
 }
-    
+
+let quadras = { 
+    "Alpha" : {"checked" : false, "types" : ["LII", "ILE", "SEI", "ESE"]},
+    "Beta"  : {"checked" : false, "types" : ["LSI", "SLE", "IEI", "EIE"]},
+    "Gamma" : {"checked" : false, "types" : ["ILI", "LIE", "ESI", "SEE"]},
+    "Delta" : {"checked" : false, "types" : ["SLI", "LSE", "EII", "IEE"]}
+}
+let cog_styles = {
+    "Causal-Determinist"      : {"checked": false, "types": ["ILE", "SEE", "EII", "LSI"]},
+    "Dialectical-Algorithmic" : {"checked": false, "types": ["LSE", "EIE", "SEI", "ILI"]},
+    "Holographic-Panoramic"   : {"checked": false, "types": ["SLE", "IEE", "ESI", "LII"]},
+    "Vortical-Synergetic"     : {"checked": false, "types": ["LIE", "ESE", "IEI", "SLI"]}
+    }
+
+let groups = [quadras, cog_styles]
+
+let score_groups = (scores) => {
+    for (let t in scores) {
+        for (group of groups) {
+            for (let which_group in group) {
+                if (group[which_group]["checked"] && group[which_group]["types"].includes(t)) {
+                    scores[t] += 1
+                }
+            }
+        }
+    }
+    return scores
+}
+
 let get_scores = () => {
     let scores = {
         "LII" : 0,
@@ -266,6 +294,7 @@ let get_scores = () => {
     }
     scores = score_reinin(scores)
     scores = score_model_a(scores)
+    scores = score_groups(scores)
 
     // to array
     var items = Object.keys(scores).map(function(key) {
@@ -295,6 +324,9 @@ var app = new Vue ({
             opposite_keyword : opposite_keyword,
             checked_reinin : checked_reinin,
             checked_model_a : checked_model_a,
+            quadras : quadras,
+            cog_styles : cog_styles,
+            groups : groups, 
             score : ''
         },
         methods : {
@@ -305,6 +337,7 @@ var app = new Vue ({
             get_model_a_dicho : get_model_a_dicho,
             is_model_a_dicho : is_model_a_dicho,
             score_model_a : score_model_a,
+            score_groups : score_groups,
             get_scores : get_scores,
             updateScore () {
                 this.score = get_scores() 
@@ -327,7 +360,6 @@ var app = new Vue ({
                 }
                 this.updateScore()
             },
-            
             check_model_a (ev, ie, dicho) {
                 if (ev.target.checked) {
                     checked_model_a[ie][dicho] = true
@@ -336,6 +368,15 @@ var app = new Vue ({
                 }
                 else {
                     checked_model_a[ie][dicho] = false
+                }
+                this.updateScore()
+            },
+            check_group (ev, group, which_group) {
+                if (ev.target.checked) {
+                    group[which_group]["checked"] = true
+                }
+                else {
+                    group[which_group]["checked"] = false
                 }
                 this.updateScore()
             }
